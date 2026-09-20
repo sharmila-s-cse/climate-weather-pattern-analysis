@@ -1,49 +1,894 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Climate Weather Pattern Analysis</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Climate Intelligence | Understand climate patterns through data</title>
+  
+  <!-- PWA & Mobile Optimization -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Understand climate patterns through data. Interactive enterprise climate analytics, anomaly detection, and econometric purchasing behavior platform.">
+  <link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
+  
+  <!-- Typography & CDN Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  
+  <!-- Design System -->
+  <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
-    <h1>Climate Weather Pattern Analysis</h1>
-    <p>Data analysis and visualization project using Python.</p>
 
-    <h2>Project Overview</h2>
-    <p>End-to-end climate and weather pattern analysis with data preprocessing, statistical analysis, hypothesis testing, machine learning, and visualization.</p>
+<div class="app-container">
+  
+  <!-- =========================================================================
+       Sidebar Navigation
+       ========================================================================= -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-logo">
+        <i data-lucide="cloud-sun"></i>
+      </div>
+      <div class="brand-info">
+        <h1>Climate Intelligence</h1>
+        <p>Analytics Platform</p>
+      </div>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <div class="nav-category-label">Platform Core</div>
+      <a class="nav-link active" data-route="home">
+        <i data-lucide="home"></i> Home
+      </a>
+      <a class="nav-link" data-route="overview">
+        <i data-lucide="layout-grid"></i> Overview
+      </a>
+      <a class="nav-link" data-route="dashboard">
+        <i data-lucide="gauge"></i> Climate Dashboard
+      </a>
+      
+      <div class="nav-category-label">Meteorological Deep Dives</div>
+      <a class="nav-link" data-route="temperature">
+        <i data-lucide="thermometer"></i> Temperature Analysis
+      </a>
+      <a class="nav-link" data-route="precipitation">
+        <i data-lucide="cloud-rain"></i> Precipitation Analysis
+      </a>
+      <a class="nav-link" data-route="seasonal">
+        <i data-lucide="calendar-range"></i> Seasonal Patterns
+      </a>
+      <a class="nav-link" data-route="anomalies">
+        <i data-lucide="alert-triangle"></i> Anomaly Detection
+        <span class="badge" id="nav-anomaly-badge">22</span>
+      </a>
+      
+      <div class="nav-category-label">Econometrics & Science</div>
+      <a class="nav-link" data-route="purchasing">
+        <i data-lucide="shopping-bag"></i> Weather & Purchasing
+      </a>
+      <a class="nav-link" data-route="statistics">
+        <i data-lucide="calculator"></i> Statistical Analysis
+      </a>
+      <a class="nav-link" data-route="explorer">
+        <i data-lucide="database"></i> Data Explorer
+      </a>
+      <a class="nav-link" data-route="insights">
+        <i data-lucide="sparkles"></i> AI Insights
+      </a>
+      
+      <div class="nav-category-label">System & Spec</div>
+      <a class="nav-link" data-route="architecture">
+        <i data-lucide="git-merge"></i> Project Architecture
+      </a>
+      <a class="nav-link" data-route="methodology">
+        <i data-lucide="book-open"></i> Methodology
+      </a>
+      <a class="nav-link" data-route="technology">
+        <i data-lucide="cpu"></i> Technology Stack
+      </a>
+      <a class="nav-link" data-route="about">
+        <i data-lucide="info"></i> About Project
+      </a>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <div class="sidebar-status-card">
+        <div class="status-indicator">
+          <span class="pulse-dot"></span>
+          <span>5,480 Clean Records</span>
+        </div>
+        <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">
+          Model Accuracy R² = 0.9586
+        </div>
+      </div>
+    </div>
+  </aside>
 
-    <h2>Key Results</h2>
-    <ul>
-        <li>5,480 cleaned records</li>
-        <li>8 visualizations generated</li>
-        <li>36.5% rainy days</li>
-        <li>22 precipitation anomaly events</li>
-        <li>Multivariable regression R�: 0.9586</li>
-    </ul>
+  <!-- =========================================================================
+       Main Content Wrapper
+       ========================================================================= -->
+  <div class="main-wrapper">
+    
+    <!-- Top Sticky Header -->
+    <header class="top-header">
+      <div class="header-left">
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Navigation">
+          <i data-lucide="menu"></i>
+        </button>
+        <div class="page-breadcrumb">
+          <span>Climate Intelligence</span>
+          <span>/</span>
+          <span class="current-page" id="current-breadcrumb">Home</span>
+        </div>
+      </div>
+      
+      <div class="header-right">
+        <button class="btn btn-outline" id="share-qr-btn">
+          <i data-lucide="qr-code"></i> Mobile QR
+        </button>
+        <button class="btn btn-icon" id="theme-toggle-btn" title="Toggle Dark/Light Mode">
+          <i data-lucide="sun-moon"></i>
+        </button>
+        <a class="btn btn-primary" data-route="dashboard">
+          <i data-lucide="bar-chart-2"></i> Launch Dashboard
+        </a>
+      </div>
+    </header>
 
-    <h2>Visualizations</h2>
+    <!-- Main Views Body -->
+    <main class="content-body">
 
-    <h3>1. Temperature Trend</h3>
-    <img src="visualizations/01_temperature_trend.png" width="800">
+      <!-- =====================================================================
+           1. HOME VIEW (Premium Landing Page)
+           ===================================================================== -->
+      <section class="view-section active" id="view-home">
+        <div class="hero-section">
+          <div class="hero-badge">
+            <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i> Enterprise Meteorological Intelligence
+          </div>
+          <h1 class="hero-title">
+            Understand Climate Patterns <br><span class="gradient-text">Through Empirical Data</span>
+          </h1>
+          <p class="hero-tagline">Climate Intelligence</p>
+          <p class="hero-desc">
+            A comprehensive, scientific climate data analytics platform synthesizing multi-year thermal oscillations,
+            precipitation anomalies, and cross-domain consumer purchasing behaviors.
+          </p>
+          
+          <div class="hero-cta-group">
+            <a class="btn btn-primary" data-route="dashboard" style="padding: 12px 28px; font-size: 0.95rem;">
+              <i data-lucide="layout-dashboard"></i> Explore Dashboard
+            </a>
+            <a class="btn btn-outline" data-route="overview" style="padding: 12px 24px; font-size: 0.95rem;">
+              <i data-lucide="file-text"></i> View Full Analysis
+            </a>
+          </div>
 
-    <h3>2. Monthly Average Temperature</h3>
-    <img src="visualizations/02_monthly_avg_temperature.png" width="800">
+          <div class="hero-stats-banner">
+            <div class="hero-stat-item">
+              <div class="hero-stat-number" id="hero-stat-records">5,480</div>
+              <div class="hero-stat-label">Cleaned Dataset Records</div>
+            </div>
+            <div class="hero-stat-item">
+              <div class="hero-stat-number" id="hero-stat-rainy">36.5%</div>
+              <div class="hero-stat-label">Rainy Days Observed</div>
+            </div>
+            <div class="hero-stat-item">
+              <div class="hero-stat-number" id="hero-stat-anomalies" style="color: var(--rose-400);">22</div>
+              <div class="hero-stat-label">Severe Rainfall Anomalies</div>
+            </div>
+            <div class="hero-stat-item">
+              <div class="hero-stat-number" id="hero-stat-r2" style="color: var(--emerald-400);">0.9586</div>
+              <div class="hero-stat-label">Multivariable Model R²</div>
+            </div>
+          </div>
+        </div>
 
-    <h3>3. Precipitation Trend</h3>
-    <img src="visualizations/03_precipitation_trend.png" width="800">
+        <!-- Home Featured Highlights -->
+        <div class="charts-grid-3">
+          <div class="glass-card" style="cursor: pointer;" data-route="temperature">
+            <div class="card-header">
+              <div class="card-title"><i data-lucide="thermometer-sun"></i> Temperature Dynamics</div>
+              <span class="badge" style="background: rgba(245, 158, 11, 0.15); color: var(--amber-400);">Thermal Modeling</span>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px;">
+              Seasonal sinusoidal cycle tracking mean temperature of 18.09°C ranging from -0.9°C to 41.5°C with 30-day moving average smoothing.
+            </p>
+            <div style="font-size: 0.8rem; color: var(--cyan-400); font-weight: 600; display: flex; align-items: center; gap: 4px;">
+              Explore Temperature Climatology <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+            </div>
+          </div>
 
-    <h3>4. Precipitation Anomalies</h3>
-    <img src="visualizations/04_precipitation_anomalies.png" width="800">
+          <div class="glass-card" style="cursor: pointer;" data-route="anomalies">
+            <div class="card-header">
+              <div class="card-title"><i data-lucide="cloud-lightning"></i> Anomaly Detection</div>
+              <span class="badge" style="background: rgba(239, 68, 68, 0.15); color: var(--rose-400);">Z > 2.5σ</span>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px;">
+              Identification of 22 extreme rainfall anomaly days exceeding 33.73 mm, reaching up to 110.90 mm and driving dramatic commercial spend surges.
+            </p>
+            <div style="font-size: 0.8rem; color: var(--rose-400); font-weight: 600; display: flex; align-items: center; gap: 4px;">
+              Inspect Anomaly Events <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+            </div>
+          </div>
 
-    <h3>5. Purchase Amount Trend</h3>
-    <img src="visualizations/05_purchase_amount_trend.png" width="800">
+          <div class="glass-card" style="cursor: pointer;" data-route="purchasing">
+            <div class="card-header">
+              <div class="card-title"><i data-lucide="trending-up"></i> Weather & Purchasing</div>
+              <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: var(--emerald-400);">Econometrics</span>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px;">
+              Linear regression proving high sensitivity: Cold beverages surge with temperature (r = 0.9089), and rainwear surges with precipitation (r = 0.9822).
+            </p>
+            <div style="font-size: 0.8rem; color: var(--emerald-400); font-weight: 600; display: flex; align-items: center; gap: 4px;">
+              View Econometric Models <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <h3>6. Product Category Comparison</h3>
-    <img src="visualizations/06_product_category_comparison.png" width="800">
+      <!-- =====================================================================
+           2. OVERVIEW VIEW
+           ===================================================================== -->
+      <section class="view-section" id="view-overview">
+        <div class="view-header">
+          <span class="view-badge">Executive Summary</span>
+          <h2 class="view-title">High-Level Climate & System Overview</h2>
+          <p class="view-subtitle">Interactive KPI metrics. Click any card to drill down into the dedicated analytics module.</p>
+        </div>
 
-    <h3>7. Correlation Heatmap</h3>
-    <img src="visualizations/07_correlation_heatmap.png" width="800">
+        <div class="kpi-grid">
+          <div class="kpi-card" data-drill-target="temperature" style="--card-accent: var(--amber-400);">
+            <div class="kpi-top">
+              <span class="kpi-label">Average Temperature</span>
+              <div class="kpi-icon-wrap"><i data-lucide="thermometer"></i></div>
+            </div>
+            <div class="kpi-value" id="kpi-avg-temp">18.09°C</div>
+            <div class="kpi-bottom">
+              <span class="kpi-trend positive"><i data-lucide="arrow-up-right"></i> Stable Cycle</span>
+              <span class="kpi-action-hint">Drill down →</span>
+            </div>
+          </div>
 
-    <h3>8. Regression Analysis</h3>
-    <img src="visualizations/08_regression_plots.png" width="800">
+          <div class="kpi-card" data-drill-target="temperature" style="--card-accent: var(--rose-400);">
+            <div class="kpi-top">
+              <span class="kpi-label">Maximum Temperature</span>
+              <div class="kpi-icon-wrap"><i data-lucide="flame"></i></div>
+            </div>
+            <div class="kpi-value" id="kpi-max-temp">41.5°C</div>
+            <div class="kpi-bottom">
+              <span class="kpi-trend negative">July Heatwave Peak</span>
+              <span class="kpi-action-hint">Drill down →</span>
+            </div>
+          </div>
 
+          <div class="kpi-card" data-drill-target="temperature" style="--card-accent: var(--cyan-400);">
+            <div class="kpi-top">
+              <span class="kpi-label">Minimum Temperature</span>
+              <div class="kpi-icon-wrap"><i data-lucide="snowflake"></i></div>
+            </div>
+            <div class="kpi-value" id="kpi-min-temp">-0.9°C</div>
+            <div class="kpi-bottom">
+              <span class="kpi-trend neutral">January Frost Trough</span>
+              <span class="kpi-action-hint">Drill down →</span>
+            </div>
+          </div>
+
+          <div class="kpi-card" data-drill-target="precipitation" style="--card-accent: var(--blue-400);">
+            <div class="kpi-top">
+              <span class="kpi-label">Total Precipitation</span>
+              <div class="kpi-icon-wrap"><i data-lucide="cloud-rain"></i></div>
+            </div>
+            <div class="kpi-value" id="kpi-total-precip">5,923.5 mm</div>
+            <div class="kpi-bottom">
+              <span class="kpi-trend positive">403 Rainy Days</span>
+              <span class="kpi-action-hint">Drill down →</span>
+            </div>
+          </div>
+
+          <div class="kpi-card" data-drill-target="explorer" style="--card-accent: var(--emerald-400);">
+            <div class="kpi-top">
+              <span class="kpi-label">Cleaned Records</span>
+              <div class="kpi-icon-wrap"><i data-lucide="database"></i></div>
+            </div>
+            <div class="kpi-value" id="kpi-records">5,480</div>
+            <div class="kpi-bottom">
+              <span class="kpi-trend positive">100% Quality Audited</span>
+              <span class="kpi-action-hint">Open explorer →</span>
+            </div>
+          </div>
+
+          <div class="kpi-card" data-drill-target="anomalies" style="--card-accent: var(--rose-500);">
+            <div class="kpi-top">
+              <span class="kpi-label">Detected Anomalies</span>
+              <div class="kpi-icon-wrap"><i data-lucide="alert-circle"></i></div>
+            </div>
+            <div class="kpi-value" id="kpi-anomalies" style="color: var(--rose-400);">22</div>
+            <div class="kpi-bottom">
+              <span class="kpi-trend negative">Threshold > 33.7 mm</span>
+              <span class="kpi-action-hint">Inspect events →</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title"><i data-lucide="activity"></i> Multi-Year Weather Overview Timeline</h3>
+              <p class="card-subtitle">Aggregated daily temperature and precipitation dynamics across 2022–2024</p>
+            </div>
+            <a class="btn btn-outline" data-route="dashboard">Open Full Dashboard</a>
+          </div>
+          <div class="chart-wrapper chart-wrapper-tall">
+            <canvas id="overviewTrendChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           3. CLIMATE DASHBOARD VIEW
+           ===================================================================== -->
+      <section class="view-section" id="view-dashboard">
+        <div class="view-header">
+          <span class="view-badge">Interactive Command Center</span>
+          <h2 class="view-title">Climate & Weather Pattern Dashboard</h2>
+          <p class="view-subtitle">Dynamic cross-filtering and multi-metric visual comparison.</p>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+          <div class="filter-group">
+            <span class="filter-label"><i data-lucide="calendar"></i> Year:</span>
+            <select class="filter-select" id="dash-year-select" onchange="window.onDashboardFilterChange()">
+              <option value="all">All Years (2022 - 2024)</option>
+              <option value="2022">2022</option>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label"><i data-lucide="calendar-range"></i> Season:</span>
+            <select class="filter-select" id="dash-season-select" onchange="window.onDashboardFilterChange()">
+              <option value="all">All Seasons</option>
+              <option value="Winter">Winter</option>
+              <option value="Spring">Spring</option>
+              <option value="Summer">Summer</option>
+              <option value="Fall">Fall</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label"><i data-lucide="cloud"></i> Condition:</span>
+            <select class="filter-select" id="dash-cond-select" onchange="window.onDashboardFilterChange()">
+              <option value="all">All Weather States</option>
+              <option value="Sunny">Sunny</option>
+              <option value="Cloudy">Cloudy</option>
+              <option value="Rainy">Rainy</option>
+              <option value="Stormy">Stormy</option>
+              <option value="Snowy">Snowy</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Dashboard Mini KPIs -->
+        <div class="kpi-grid">
+          <div class="kpi-card" data-drill-target="temperature">
+            <div class="kpi-top">
+              <span class="kpi-label">Mean Temperature</span>
+              <div class="kpi-icon-wrap"><i data-lucide="thermometer"></i></div>
+            </div>
+            <div class="kpi-value" id="dash-kpi-temp">18.09°C</div>
+            <div class="kpi-bottom"><span>Seasonal Mean</span><span class="kpi-action-hint">Details →</span></div>
+          </div>
+          <div class="kpi-card" data-drill-target="precipitation">
+            <div class="kpi-top">
+              <span class="kpi-label">Daily Precipitation</span>
+              <div class="kpi-icon-wrap"><i data-lucide="cloud-rain"></i></div>
+            </div>
+            <div class="kpi-value" id="dash-kpi-precip">5.40 mm/day</div>
+            <div class="kpi-bottom"><span>Average Daily Rainfall</span><span class="kpi-action-hint">Details →</span></div>
+          </div>
+          <div class="kpi-card" data-drill-target="purchasing">
+            <div class="kpi-top">
+              <span class="kpi-label">Avg Daily Spend</span>
+              <div class="kpi-icon-wrap"><i data-lucide="dollar-sign"></i></div>
+            </div>
+            <div class="kpi-value" id="dash-kpi-sales">$30,230.12</div>
+            <div class="kpi-bottom"><span>Daily Store Aggregate</span><span class="kpi-action-hint">Details →</span></div>
+          </div>
+          <div class="kpi-card" data-drill-target="statistics">
+            <div class="kpi-top">
+              <span class="kpi-label">Linear Model R²</span>
+              <div class="kpi-icon-wrap"><i data-lucide="check-circle"></i></div>
+            </div>
+            <div class="kpi-value" id="dash-kpi-r2">0.9586</div>
+            <div class="kpi-bottom"><span>Model Goodness of Fit</span><span class="kpi-action-hint">Details →</span></div>
+          </div>
+        </div>
+
+        <!-- Main Charts Grid -->
+        <div class="charts-grid-2">
+          <div class="glass-card">
+            <div class="card-header">
+              <h3 class="card-title"><i data-lucide="thermometer"></i> Temperature Trend & 30-Day Moving Average</h3>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="dashTempChart"></canvas>
+            </div>
+          </div>
+          <div class="glass-card">
+            <div class="card-header">
+              <h3 class="card-title"><i data-lucide="cloud-drizzle"></i> Precipitation Timeline & Rolling Baseline</h3>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="dashPrecipChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="charts-grid-2">
+          <div class="glass-card">
+            <div class="card-header">
+              <h3 class="card-title"><i data-lucide="pie-chart"></i> Weather Condition Distribution</h3>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="dashWeatherDistChart"></canvas>
+            </div>
+          </div>
+          <div class="glass-card">
+            <div class="card-header">
+              <h3 class="card-title"><i data-lucide="bar-chart-3"></i> Product Category Revenue Comparison</h3>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="dashCatSpendChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           4. TEMPERATURE ANALYSIS VIEW
+           ===================================================================== -->
+      <section class="view-section" id="view-temperature">
+        <div class="view-header">
+          <span class="view-badge">Thermal Modeling</span>
+          <h2 class="view-title">Temperature Variations & Climatology</h2>
+          <p class="view-subtitle">Detailed multi-temporal temperature distribution and monthly cycle analytics.</p>
+        </div>
+
+        <div class="charts-grid-2">
+          <div class="glass-card">
+            <div class="card-header">
+              <h3 class="card-title"><i data-lucide="bar-chart-2"></i> Monthly Climatology (Mean Temp °C)</h3>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="tempMonthlyChart"></canvas>
+            </div>
+          </div>
+          <div class="glass-card">
+            <div class="card-header">
+              <h3 class="card-title"><i data-lucide="gauge"></i> Temperature Bracket Distribution</h3>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="tempBracketChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Temperature Scientific Insight Box -->
+        <div class="glass-card" style="margin-top: 24px;">
+          <div class="card-header">
+            <h3 class="card-title"><i data-lucide="file-text"></i> Key Meteorological Findings: Temperature</h3>
+          </div>
+          <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px;">
+            The regional climate demonstrates an annual sinusoidal temperature oscillation with a seasonal baseline of 18.09°C 
+            and a peak seasonal amplitude of ±13.0°C. The coldest monthly mean occurs in January (5.00°C, min record -0.9°C), 
+            and the warmest in July (30.93°C, max record 41.5°C). 
+          </p>
+          <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6;">
+            Thermal variance is largest during transitional Spring months (April std dev = 3.55°C), while Summer displays tight clustering around 29.9°C. 
+            This predictable curve forms the primary driver for retail seasonal transitions.
+          </p>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           5. PRECIPITATION ANALYSIS VIEW
+           ===================================================================== -->
+      <section class="view-section" id="view-precipitation">
+        <div class="view-header">
+          <span class="view-badge">Hydrology & Precipitation</span>
+          <h2 class="view-title">Precipitation Trends & Rainfall Distribution</h2>
+          <p class="view-subtitle">Rainfall occurrence rates, intensity classifications, and extreme threshold analyses.</p>
+        </div>
+
+        <div class="charts-grid-2">
+          <div class="glass-card">
+            <div class="card-header">
+              <h3 class="card-title"><i data-lucide="cloud-rain"></i> Monthly Total Rainfall (mm)</h3>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="precipMonthlyChart"></canvas>
+            </div>
+          </div>
+          <div class="glass-card">
+            <div class="card-header">
+              <h3 class="card-title"><i data-lucide="pie-chart"></i> Rainfall Intensity Classification</h3>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="rainIntensityChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           6. SEASONAL PATTERNS VIEW
+           ===================================================================== -->
+      <section class="view-section" id="view-seasonal">
+        <div class="view-header">
+          <span class="view-badge">Seasonal Breakdown</span>
+          <h2 class="view-title">Four-Season Comparative Analysis</h2>
+          <p class="view-subtitle">Comparing weather parameters and commercial retail dynamics across seasons.</p>
+        </div>
+
+        <div class="kpi-grid" id="seasonal-cards-container">
+          <!-- Populated by app.js -->
+        </div>
+
+        <div class="glass-card">
+          <div class="card-header">
+            <h3 class="card-title"><i data-lucide="radar"></i> Seasonal Multi-Metric Radar Comparison</h3>
+          </div>
+          <div class="chart-wrapper chart-wrapper-tall">
+            <canvas id="seasonalCompareChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           7. ANOMALY DETECTION VIEW
+           ===================================================================== -->
+      <section class="view-section" id="view-anomalies">
+        <div class="view-header">
+          <span class="view-badge" style="background: rgba(239, 68, 68, 0.15); color: var(--rose-400);">Anomaly Intelligence</span>
+          <h2 class="view-title">Precipitation Anomaly Detection (Z-Score > 2.5σ)</h2>
+          <p class="view-subtitle">Identification of statistical rainfall outliers exceeding 33.73 mm. Click any anomaly event to view its full analytical breakdown.</p>
+        </div>
+
+        <div class="anomaly-list" id="anomaly-records-container">
+          <!-- Populated dynamically by app.js -->
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           8. WEATHER & PURCHASING ANALYSIS VIEW
+           ===================================================================== -->
+      <section class="view-section" id="view-purchasing">
+        <div class="view-header">
+          <span class="view-badge">Econometric Analytics</span>
+          <h2 class="view-title">Weather vs. Consumer Purchasing Behavior</h2>
+          <p class="view-subtitle">Evaluating category demand elasticity, precipitation surges, and temperature correlations.</p>
+        </div>
+
+        <div class="charts-grid-2">
+          <div class="glass-card">
+            <div class="card-header">
+              <h3 class="card-title"><i data-lucide="pie-chart"></i> Category Revenue Share</h3>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="purchasingShareChart"></canvas>
+            </div>
+          </div>
+          <div class="glass-card">
+            <div class="card-header">
+              <h3 class="card-title"><i data-lucide="activity"></i> Static Regression Figures Generated by Python</h3>
+            </div>
+            <img src="./visualizations/08_regression_plots.png" alt="Regression Plots" style="width: 100%; border-radius: 8px; border: 1px solid var(--border-subtle);">
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           9. STATISTICAL ANALYSIS VIEW
+           ===================================================================== -->
+      <section class="view-section" id="view-statistics">
+        <div class="view-header">
+          <span class="view-badge">Scientific Rigor</span>
+          <h2 class="view-title">Statistical Analysis & Hypothesis Testing</h2>
+          <p class="view-subtitle">SciPy p-values, ANOVA F-tests, and Scikit-learn regression models translated into business language.</p>
+        </div>
+
+        <div class="glass-card" style="margin-bottom: 28px;">
+          <div class="card-header">
+            <h3 class="card-title"><i data-lucide="grid"></i> Pearson Correlation Matrix</h3>
+          </div>
+          <div id="correlation-matrix-container"></div>
+        </div>
+
+        <h3 style="font-size: 1.3rem; font-weight: 700; color: #ffffff; margin-bottom: 16px;">Formal Hypothesis Tests (SciPy)</h3>
+        <div class="charts-grid-2" id="hypothesis-tests-container" style="margin-bottom: 32px;"></div>
+
+        <h3 style="font-size: 1.3rem; font-weight: 700; color: #ffffff; margin-bottom: 16px;">Scikit-Learn Linear Regression Models</h3>
+        <div class="charts-grid-2" id="regression-models-container"></div>
+      </section>
+
+      <!-- =====================================================================
+           10. DATA EXPLORER VIEW
+           ===================================================================== -->
+      <section class="view-section" id="view-explorer">
+        <div class="view-header">
+          <span class="view-badge">Data Grid</span>
+          <h2 class="view-title">Cleaned Dataset Explorer</h2>
+          <p class="view-subtitle">Inspect, search, sort, and export verified observations from the 5,480-row cleaned dataset.</p>
+        </div>
+
+        <div class="glass-card">
+          <div class="table-controls">
+            <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 260px;">
+              <input type="text" class="filter-input" placeholder="Search date, category, weather..." style="width: 100%; max-width: 340px;" oninput="window.onExplorerSearch(this.value)">
+              <select class="filter-select" id="explorer-category-select" onchange="window.onExplorerFilterChange()">
+                <option value="all">All Categories</option>
+                <option value="Cold Beverages & Ice Cream">Cold Beverages & Ice Cream</option>
+                <option value="Hot Beverages & Soups">Hot Beverages & Soups</option>
+                <option value="Rainwear & Umbrellas">Rainwear & Umbrellas</option>
+                <option value="Outdoor & Camping Gear">Outdoor & Camping Gear</option>
+                <option value="Heating & Winter Apparel">Heating & Winter Apparel</option>
+              </select>
+              <select class="filter-select" id="explorer-condition-select" onchange="window.onExplorerFilterChange()">
+                <option value="all">All Weather</option>
+                <option value="Sunny">Sunny</option>
+                <option value="Cloudy">Cloudy</option>
+                <option value="Rainy">Rainy</option>
+                <option value="Stormy">Stormy</option>
+                <option value="Snowy">Snowy</option>
+              </select>
+            </div>
+            <div>
+              <button class="btn btn-primary" onclick="window.exportFilteredCSV()">
+                <i data-lucide="download"></i> Export Filtered CSV
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th onclick="window.onExplorerSort('Date')">Date ↕</th>
+                  <th onclick="window.onExplorerSort('Temperature')">Temp (°C) ↕</th>
+                  <th onclick="window.onExplorerSort('Precipitation')">Rain (mm) ↕</th>
+                  <th onclick="window.onExplorerSort('Humidity')">Humidity ↕</th>
+                  <th onclick="window.onExplorerSort('Weather_Condition')">Weather ↕</th>
+                  <th onclick="window.onExplorerSort('Product_Category')">Category ↕</th>
+                  <th onclick="window.onExplorerSort('Purchase_Amount')">Spend ($) ↕</th>
+                  <th onclick="window.onExplorerSort('Number_of_Purchases')">Count ↕</th>
+                </tr>
+              </thead>
+              <tbody id="explorer-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-pagination">
+            <span id="explorer-page-info">Loading records...</span>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-outline" id="explorer-prev-btn" onclick="window.changeExplorerPage(-1)" disabled>Previous</button>
+              <button class="btn btn-outline" id="explorer-next-btn" onclick="window.changeExplorerPage(1)">Next</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           11. INSIGHTS VIEW
+           ===================================================================== -->
+      <section class="view-section" id="view-insights">
+        <div class="view-header">
+          <span class="view-badge">AI Synthesis</span>
+          <h2 class="view-title">Calculated Climate & Business Insights</h2>
+          <p class="view-subtitle">Derived strictly from mathematical calculations and econometric modeling on actual project data.</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 20px;" id="ai-insights-container">
+          <!-- Populated by app.js -->
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           12. PROJECT ARCHITECTURE VIEW
+           ===================================================================== -->
+      <section class="view-section" id="view-architecture">
+        <div class="view-header">
+          <span class="view-badge">System Pipeline</span>
+          <h2 class="view-title">End-to-End Project Architecture</h2>
+          <p class="view-subtitle">Click any pipeline stage to inspect what happens, the tools used, why it is required, and sample code.</p>
+        </div>
+
+        <div class="pipeline-flow" id="architecture-flow-container">
+          <!-- Populated by app.js -->
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           13. METHODOLOGY VIEW
+           ===================================================================== -->
+      <section class="view-section" id="view-methodology">
+        <div class="view-header">
+          <span class="view-badge">Scientific Framework</span>
+          <h2 class="view-title">Analytical Methodology</h2>
+          <p class="view-subtitle">Theoretical foundations of physical simulation, anomaly z-scoring, and hypothesis testing.</p>
+        </div>
+
+        <div class="charts-grid-2">
+          <div class="glass-card">
+            <h3 class="card-title"><i data-lucide="sun"></i> 1. Meteorological Modeling</h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-top: 10px;">
+              Temperature follows an annual sinusoidal oscillation calibrated to mid-latitude temperate zones:
+            </p>
+            <div class="code-snippet">
+              T(t) = 18.0 - 13.0 * cos(2π(t - 15) / 365.25) + ε, where ε ~ N(0, 2.8°C)
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-top: 10px;">
+              Precipitation is modeled as a zero-inflated Gamma process with seasonal rainfall probabilities reflecting spring convective showers and autumn storms.
+            </p>
+          </div>
+
+          <div class="glass-card">
+            <h3 class="card-title"><i data-lucide="alert-triangle"></i> 2. Anomaly Z-Score Formulation</h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-top: 10px;">
+              Precipitation anomalies are detected via normalized statistical deviation from historical mean:
+            </p>
+            <div class="code-snippet">
+              Z = (Precipitation - μ) / σ, with Anomaly Flagged if Z > 2.5
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-top: 10px;">
+              For baseline μ = 5.40 mm and σ = 11.33 mm, the anomaly boundary is 33.73 mm.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           14. TECHNOLOGY VIEW
+           ===================================================================== -->
+      <section class="view-section" id="view-technology">
+        <div class="view-header">
+          <span class="view-badge">Tech Stack</span>
+          <h2 class="view-title">Technologies & Frameworks</h2>
+          <p class="view-subtitle">Detailed breakdown of libraries, languages, and architectures powering the platform.</p>
+        </div>
+
+        <div class="charts-grid-3" id="tech-stack-container">
+          <!-- Populated by app.js -->
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           15. ABOUT PROJECT VIEW
+           ===================================================================== -->
+      <section class="view-section" id="view-about">
+        <div class="view-header">
+          <span class="view-badge">Project Scope</span>
+          <h2 class="view-title">About Climate Intelligence</h2>
+          <p class="view-subtitle">Background, portfolio credentials, and repository specifications.</p>
+        </div>
+
+        <div class="glass-card" style="max-width: 800px;">
+          <h3 class="card-title" style="margin-bottom: 12px;"><i data-lucide="award"></i> Portfolio & Showcase Specifications</h3>
+          <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 16px;">
+            <strong>Climate Intelligence</strong> is an end-to-end data analytics and econometric modeling project demonstrating proficiency in 
+            Python, Pandas, NumPy, SciPy, Scikit-learn, Matplotlib, modern HTML5/CSS3 glassmorphic design, Chart.js, and Progressive Web App engineering.
+          </p>
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 16px; margin-bottom: 16px;">
+            <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 6px;">Recommended Showcase Channels:</div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <span class="badge" style="background: rgba(6, 182, 212, 0.15); color: var(--cyan-400);">GitHub Repository</span>
+              <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: var(--emerald-400);">LinkedIn Portfolio Project</span>
+              <span class="badge" style="background: rgba(139, 92, 246, 0.15); color: var(--violet-400);">Resume Project Highlight</span>
+              <span class="badge" style="background: rgba(245, 158, 11, 0.15); color: var(--amber-400);">College Capstone Presentation</span>
+            </div>
+          </div>
+          <div style="font-size: 0.85rem; color: var(--text-muted);">
+            Project Title: <strong>Climate & Weather Pattern Analysis</strong><br>
+            Application Title: <strong>Climate Intelligence</strong><br>
+            Tagline: <em>Understand climate patterns through data.</em>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="mobile-bottom-nav">
+    <a class="mobile-bottom-item active" data-route="home">
+      <i data-lucide="home"></i> Home
+    </a>
+    <a class="mobile-bottom-item" data-route="dashboard">
+      <i data-lucide="gauge"></i> Dashboard
+    </a>
+    <a class="mobile-bottom-item" data-route="anomalies">
+      <i data-lucide="alert-triangle"></i> Anomalies
+    </a>
+    <a class="mobile-bottom-item" data-route="explorer">
+      <i data-lucide="database"></i> Data
+    </a>
+    <a class="mobile-bottom-item" data-route="insights">
+      <i data-lucide="sparkles"></i> Insights
+    </a>
+  </nav>
+
+</div>
+
+<!-- =========================================================================
+     Modals
+     ========================================================================= -->
+
+<!-- Anomaly Detail Modal -->
+<div class="modal-overlay" id="anomaly-detail-modal">
+  <div class="modal-card">
+    <button class="modal-close-btn" onclick="window.closeAnomalyModal()">&times;</button>
+    
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+      <span class="severity-pill" id="modal-anom-severity">Extreme</span>
+      <h3 style="font-size: 1.3rem; font-weight: 700; color: #ffffff;" id="modal-anom-date">2024-09-12</h3>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+      <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px;">
+        <div style="font-size: 0.72rem; color: var(--text-muted);">Recorded Rainfall</div>
+        <div style="font-size: 1.3rem; font-weight: 700; color: var(--rose-400);" id="modal-anom-val">87.5 mm</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px;">
+        <div style="font-size: 0.72rem; color: var(--text-muted);">Expected Baseline</div>
+        <div style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary);" id="modal-anom-expected">5.4 mm</div>
+      </div>
+    </div>
+    
+    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px;">
+      <strong>Anomaly Threshold:</strong> <span id="modal-anom-threshold">33.7 mm</span>
+    </div>
+    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px;">
+      <strong>Deviation:</strong> <span id="modal-anom-diff">+82.1 mm</span>
+    </div>
+    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">
+      <strong>Z-Score:</strong> <span id="modal-anom-zscore" style="color: var(--cyan-400); font-weight: 700;">7.25σ</span>
+    </div>
+    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px; border-top: 1px solid var(--border-subtle); padding-top: 10px;">
+      <strong>Daily Retail Impact:</strong> <span id="modal-anom-spend">$68,230.15</span>
+    </div>
+    
+    <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; background: rgba(0,0,0,0.25); padding: 12px; border-radius: 8px;" id="modal-anom-explanation"></p>
+  </div>
+</div>
+
+<!-- QR Code Modal -->
+<div class="modal-overlay" id="qr-modal">
+  <div class="modal-card">
+    <button class="modal-close-btn" onclick="window.closeQrModal()">&times;</button>
+    <div class="qr-container">
+      <h3 style="font-size: 1.3rem; font-weight: 700; color: #ffffff; margin-bottom: 6px;">Mobile QR Access</h3>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px;">
+        Scan with your smartphone camera to access this application instantly on mobile.
+      </p>
+      
+      <div class="qr-box">
+        <img id="qr-code-img" src="" alt="Mobile Access QR Code" style="width: 220px; height: 220px; display: block;">
+      </div>
+      
+      <div style="font-size: 0.75rem; color: var(--text-muted); word-break: break-all; max-width: 400px; font-family: var(--font-mono); margin-top: 10px;" id="qr-url-text"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Application Core Script -->
+<script src="./js/app.js"></script>
 </body>
 </html>
